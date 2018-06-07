@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css" />
+</head>
+<body>
+    <div id="vao"></div>
+
+    <div>
+        <button type="button" onclick="abrirModal()" >Exibir Modal</button>
+    </div>
+
+    <script type="text/javascript" src="~/assets/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function abrirModal() {
+            if ($.active) {
+                return;
+            }
+            $.ajax({
+                url: "@Url.Action("Modal","Usuario")",
+                cache: false,
+                success: function (dados) {
+                    $("#vao").html(dados);
+                    $("#meuModal").modal();
+                },
+                error: function () {
+                    alert("Deu erro");
+                }
+            });
+
+        }
+
+    </script>
+</body>
+</html>
