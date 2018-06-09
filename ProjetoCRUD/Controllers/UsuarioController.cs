@@ -1,112 +1,148 @@
-﻿using Azure;
-using ProjetoCRUD.BD;
-using ProjetoCRUD.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Data.SqlClient;
 
-namespace ProjetoCRUD.Controllers
+namespace ProjetoCRUD
 {
+    //CREATE TABLE tbPedido (
+    //    Id INT NOT NULL IDENTITY PRIMARY KEY,
+    //    Nome VARCHAR(50) NOT NULL,
+    //    Valor FLOAT NOT NULL
+    //)
+
     public class UsuarioController : Controller
     {
-        // GET: Usuario
+        // GET: Pedido
         public ActionResult Index()
         {
+            List<Pedido> lista = new List<Pedido>();
 
-            return View();
-        }
-
-        public ActionResult Modal()
-        {
-
-            return PartialView("_Modal");
-        }
-
-        public ActionResult Listar(Pessoa pessoa)
-        {
-            PessoaDAO pessoaDAO = new PessoaDAO();
-
-            pessoaDAO.Adicionar(pessoa);
-
-            using (SqlConnection conn = SqlConn.Abrir())
+            // Cria e abre a conexão com o banco de dados (essa string só serve para acessar o banco localmente)
+            // Veja mais strings de conexão em http://www.connectionstrings.com/
+            using (SqlConnection conn = new SqlConnection(""))
             {
-                using (SqlCommand cmd = new SqlCommand(@"
-                    SELECT Id, Nome
-                    FROM tbPessoa
-                    ORDER BY Nome ASC
-                    ", conn))
+                conn.Open();
+
+                // Cria um comando para selecionar registros da tabela, trazendo todas as pessoas que nasceram depois de 1/1/1900
+                using (SqlCommand cmd = new SqlCommand("SELECT Id, Nome, Valor FROM tbPedido ORDER BY Nome ASC", conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        List<Pessoa> lista = new List<Pessoa>();
-
+                        //Obtém os registros, um por vez
                         while (reader.Read() == true)
                         {
-                            lista.Add(new Pessoa()
-                            {
-                                Id = reader.GetInt32(0),
-                                Nome = reader.GetString(1)
-                            });
+                            int id = reader.GetInt32(0);
+                            string nome = reader.GetString(1);
+                            double valor = reader.GetDouble(2);
+
+                            Pedido pedido = new Pedido();
+                            pedido.Id = id;
+                            pedido.Nome = nome;
+                            pedido.Valor = valor;
+
+                            lista.Add(pedido);
                         }
-
-                        return View(lista);
                     }
                 }
             }
+
+            return View(lista);
         }
 
-
-
-
-        public ActionResult Upload(Pessoa pessoa)
+        public ActionResult Criar(Pedido pedido)
         {
-
-            if (Request.Files.Count == 0)
+            // Validar!!!!
+            if (string.IsNullOrWhiteSpace(pedido.Nome))
             {
-                return Json("Sem arquivos!", JsonRequestBehavior.AllowGet);
+                return Json("Nome inválido!");
             }
 
-            if (Request.Files[0].ContentType != "image/jpeg")
+            // Cria e abre a conexão com o banco de dados (essa string só serve para acessar o banco localmente)
+            // Veja mais strings de conexão em http://www.connectionstrings.com/
+            using (SqlConnection conn = new SqlConnection(""))
             {
-                return Json("Apenas imagens JPEG!", JsonRequestBehavior.AllowGet);
-            }
+                conn.Open();
 
-            try
-            {
-                using (Image bmp = Image.FromStream(Request.Files[0].InputStream))
+                // Cria um comando para inserir um novo registro à tabela
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO tbPedido (Nome, Valor) OUTPUT INSERTED.Id VALUES (@nome, @valor)", conn))
                 {
-                    if (bmp.Width > 2000 || bmp.Height > 2000)
-                    {
-                        return Json("A imagem deve ter dimensões menores do que 2000x2000!", JsonRequestBehavior.AllowGet);
-                    }
+                    // Esses valores poderiam vir de qualquer outro lugar, como uma TextBox...
+                    cmd.Parameters.AddWithValue("@nome", pedido.Nome);
+                    cmd.Parameters.AddWithValue("@valor", pedido.Valor);
+
+                    int id = (int)cmd.ExecuteScalar();
                 }
-
-                Request.Files[0].InputStream.Position = 0;
-            }
-            catch
-            {
-                return Json("Imagem JPEG inválida!", JsonRequestBehavior.AllowGet);
             }
 
-            //Para retornar o ID do banco
-            //pessoa.Id = (int)cmd.ExecuteScalar();
-
-            AzureStorage.Upload(
-                "web",
-                pessoa.Id+".jpg",
-                Request.Files[0].InputStream,
-                "teste",
-                "UseDevelopmentStorage=true");
-
-            return Json("Sucesso!", JsonRequestBehavior.AllowGet);
-
-
+            return Json("ok");
         }
 
+        public ActionResult ModalEditar(int id)
+        {
+            Pedido pedido;
 
+            // Cria e abre a conexão com o banco de dados (essa string só serve para acessar o banco localmente)
+            // Veja mais strings de conexão em http://www.connectionstrings.com/
+            using (SqlConnection conn = new SqlConnection(""))
+            {
+                conn.Open();
+
+                // Cria um comando para selecionar registros da tabela, trazendo todas as pessoas que nasceram depois de 1/1/1900
+                using (SqlCommand cmd = new SqlCommand("SELECT Id, Nome, Valor FROM tbPedido WHERE Id = @id", conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        //Obtém os registros, um por vez
+                        if (reader.Read() == true)
+                        {
+                            string nome = reader.GetString(1);
+                            double valor = reader.GetDouble(2);
+
+                            pedido = new Pedido();
+                            pedido.Id = id;
+                            pedido.Nome = nome;
+                            pedido.Valor = valor;
+                        }
+                        else
+                        {
+                            pedido = null;
+                        }
+                    }
+                }
+            }
+
+            return PartialView("_Editar", pedido);
+        }
+
+        public ActionResult Editar(Pedido pedido)
+        {
+            // Validar!!!!
+            if (string.IsNullOrWhiteSpace(pedido.Nome))
+            {
+                return Json("Nome inválido!");
+            }
+
+            // Cria e abre a conexão com o banco de dados (essa string só serve para acessar o banco localmente)
+            // Veja mais strings de conexão em http://www.connectionstrings.com/
+            using (SqlConnection conn = new SqlConnection(""))
+            {
+                conn.Open();
+
+                // Cria um comando para inserir um novo registro à tabela
+                using (SqlCommand cmd = new SqlCommand("UPDATE tbPedido SET Nome = @nome, Valor = @valor WHERE Id = @id", conn))
+                {
+                    // Esses valores poderiam vir de qualquer outro lugar, como uma TextBox...
+                    cmd.Parameters.AddWithValue("@nome", pedido.Nome);
+                    cmd.Parameters.AddWithValue("@valor", pedido.Valor);
+                    cmd.Parameters.AddWithValue("@id", pedido.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return Json("ok");
+        }
     }
 }

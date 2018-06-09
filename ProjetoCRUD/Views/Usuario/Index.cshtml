@@ -1,89 +1,148 @@
-﻿@model List<ProjetoCRUD.Models.Pessoa>
+﻿@model List<ProjetoCRUD.Models.Usuario>
 @{
     Layout = null;
 }
+
 <!DOCTYPE html>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Cadastro de Usuários</title>
-
-    <link rel="stylesheet" type="text/css" href="~/assets/css/bootstrap.min.css" />
-
-    <style type="text/css">
-        body {
-            background-color: #D0D0D0
-        }
-    </style>
-
-    <h1>
-        <font color="black" size="15px">
-            <b>
-                <i>Cadastro de Usuários</i>
-            </b>
-        </font>
-    </h1>
-
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
 </head>
 <body>
-    <form id="idform">
-        <table id="userTable" class="table">
+    <div>
+        
+        <div id="vao"></div>
+
+        <div id="modalCriar" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <form id="formCriar">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Criar Pedido</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="txtNome">Nome</label>
+                                <input type="text" class="form-control" id="txtNome" name="Nome" />
+                            </div>
+                            <div class="form-group">
+                                <label for="txtValor">Valor</label>
+                                <input type="text" class="form-control" id="txtValor" name="Valor" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Criar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <button type="button" onclick="mostrarModalCriar()">Criar...</button>
+
+        <table>
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Foto</th>
                     <th>Nome</th>
-                    <th>Email</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th>Valor</th>
+                    <th></th>
                 </tr>
             </thead>
+
             <tbody>
-                @for (int i = 0; i < Model.Count; i++)
+                @for(int i = 0; i < Model.Count; i++)
                 {
-                <tr>
-                    <td>@Model[i].Id</td>
-                    <td>@Model[i].Nome</td>
-                    <td>@Model[i].Email</td>
-                    <td>
-                        <button type="button" onclick="exibirNomeId(@Model[i].Id)">Exibir</button>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>@Model[i].Id</td>
+                        <td>@Model[i].Nome</td>
+                        <td>@Model[i].Valor</td>
+                        <td><button type="button" onclick="mostrarModalEditar(@Model[i].Id)">Editar</button></td>
+                    </tr>
                 }
             </tbody>
+
         </table>
-    </form>
 
+        <script type="text/javascript" src="~/assets/js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="~/assets/js/jquery.mask.min.js"></script>
+        <script type="text/javascript" src="~/assets/js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
 
-    <div id="vao"></div>
-    <div>
+            $("#formCriar").validate({
+                rules: {
+                    Nome: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 50
+                    },
 
-        <button class="btn btn-primary fa fa-pencil" type="button" onclick="abrirModal()">Cadastrar</button>
-    </div>
-
-    <script type="text/javascript" src="~/assets/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-
-        function abrirModal() {
-            if ($.active) {
-                return;
-            }
-
-            $.ajax({
-                url: "@Url.Action("Modal","Usuario")",
-                cache: false,
-                success: function (dados) {
-                    $("#vao").html(dados);
-                    $("#meuModal").modal();
+                    Valor: {
+                        required: true,
+                        min: 0,
+                        max: 1000
+                    }
                 },
-                error: function () {
-                    alert("Deu erro");
+
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: "/Pedido/Criar",
+                        method: "POST",
+                        data: new FormData(document.getElementById("formCriar")),
+                        contentType: false,
+                        processData: false,
+                        success: function (dados) {
+                            if (dados == "ok") {
+                                window.location.reload();
+                            } else {
+                                alert("Erro: " + dados);
+                            }
+                        },
+                        error: function () {
+                            alert("Erro");
+                        }
+                    });
                 }
             });
 
-        }
 
-    </script>
+            function mostrarModalCriar() {
+                $("#modalCriar").modal({
+                    backdrop: "static",
+                    keyboard: false
+                });
+            }
+
+            function mostrarModalEditar(id) {
+                var obj = {
+                    id: id
+                };
+                $.ajax({
+                    url: "/Pedido/ModalEditar",
+                    method: "GET",
+                    cache: false,
+                    data: obj,
+                    success: function (dados) {
+                        $("#vao").html(dados);
+
+                        $("#modalEditar").modal({
+                            backdrop: "static",
+                            keyboard: false
+                        });
+                    },
+                    error: function () {
+                        alert("Erro");
+                    }
+                })
+            }
+
+        </script>
+    </div>
 </body>
 </html>

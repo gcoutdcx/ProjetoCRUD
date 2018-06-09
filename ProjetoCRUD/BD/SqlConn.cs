@@ -1,7 +1,6 @@
 ﻿using System.Data.SqlClient;
 
-
-namespace ProjetoCRUD.BD
+namespace ProjetoCRUD
 {
     public static class SqlConn
     {
