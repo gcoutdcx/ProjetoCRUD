@@ -10,8 +10,12 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
     <link type="text/css" rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+
+   
 </head>
 <body>
+    <div><p><h1>Cadastro de Usuários</h1></p></div>
+
     <div>
         
         <div id="vao"></div>
@@ -22,16 +26,20 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Criar Pedido</h4>
+                            <h4 class="modal-title">Criar Usuario</h4>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="txtNome">Nome</label>
-                                <input type="text" class="form-control" id="txtNome" name="Nome" />
+                                <label for="Nome">Nome</label>
+                                <input type="text" class="form-control" name="Nome" id="txtNome" placeholder="Nome">
                             </div>
                             <div class="form-group">
-                                <label for="txtValor">Valor</label>
-                                <input type="text" class="form-control" id="txtValor" name="Valor" />
+                                <label for="Email">E-mail</label>
+                                <input type="email" class="form-control" nome="Email" id="txtEmail" placeholder="E-mail">
+                            </div>
+                            <div class="form-group">
+                                <label for="combo">Foto</label>
+                                <input type="file" id="txtFoto" name="Foto" accept="image/jpeg" />
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -43,15 +51,18 @@
             </div>
         </div>
 
-        <button type="button" onclick="mostrarModalCriar()">Criar...</button>
 
-        <table>
+        <button class="btn btn-primary fa fa-pencil" type="button" onclick="mostrarModalCriar()">Novo Usuário</button>
+
+        <table id="userTable" class="table">
             <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Foto</th>
                     <th>Nome</th>
-                    <th>Valor</th>
-                    <th></th>
+                    <th>Email</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
                 </tr>
             </thead>
 
@@ -60,9 +71,11 @@
                 {
                     <tr>
                         <td>@Model[i].Id</td>
+                        <td>FOTO</td>
                         <td>@Model[i].Nome</td>
-                        <td>@Model[i].Valor</td>
+                        <td>@Model[i].Email</td>
                         <td><button type="button" onclick="mostrarModalEditar(@Model[i].Id)">Editar</button></td>
+                        <td><button type="button" onclick="(@Model[i].Id)">Excluir</button></td>
                     </tr>
                 }
             </tbody>
@@ -83,16 +96,15 @@
                         maxlength: 50
                     },
 
-                    Valor: {
+                    Email: {
                         required: true,
-                        min: 0,
-                        max: 1000
+                        email: true
                     }
                 },
 
                 submitHandler: function (form) {
                     $.ajax({
-                        url: "/Pedido/Criar",
+                        url: "/Usuario/Criar",
                         method: "POST",
                         data: new FormData(document.getElementById("formCriar")),
                         contentType: false,
@@ -117,6 +129,7 @@
                     backdrop: "static",
                     keyboard: false
                 });
+
             }
 
             function mostrarModalEditar(id) {

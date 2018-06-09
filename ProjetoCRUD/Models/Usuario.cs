@@ -1,4 +1,5 @@
-﻿namespace ProjetoCRUD.Models
+﻿using System.Linq;
+namespace ProjetoCRUD.Models
 {
     public class Usuario
     {

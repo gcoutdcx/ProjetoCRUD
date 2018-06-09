@@ -115,14 +115,14 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AzureStorage.cs" />
-    <Compile Include="BD\SqlConn.cs" />
+    <Compile Include="BD\Conexao.cs" />
     <Compile Include="BD\UsuarioDAO.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Pessoa.cs" />
-    <Compile Include="Models\PessoaDAO.cs" />
+    <Compile Include="BD\PessoaDAO.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

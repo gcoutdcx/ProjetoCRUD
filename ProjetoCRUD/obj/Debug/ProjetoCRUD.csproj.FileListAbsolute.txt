@@ -101,9 +101,7 @@ C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\bin\pt-br\System.Web.Webpages.D
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\bin\pt-br\System.Web.Webpages.Razor.resources.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\bin\pt-br\System.Web.Helpers.resources.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\bin\pt-br\System.Web.Mvc.resources.dll
-C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csprojAssemblyReference.cache
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csproj.CoreCompileInputs.cache
-C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csproj.CopyComplete
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.pdb
 C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\bin\Microsoft.Azure.KeyVault.Core.dll
@@ -173,3 +171,4 @@ C:\workspace\ProjetoCRUD\ProjetoCRUD\bin\pt-br\System.Web.Mvc.resources.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.pdb
+C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csprojResolveAssemblyReference.cache
