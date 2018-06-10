@@ -11,13 +11,12 @@
     <title></title>
     <link type="text/css" rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
 
-   
+
 </head>
-<body>
+<body id="teste">
     <div><p><h1>Cadastro de Usuários</h1></p></div>
 
     <div>
-        
         <div id="vao"></div>
 
         <div id="modalCriar" class="modal fade" tabindex="-1" role="dialog">
@@ -30,13 +29,14 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="Nome">Nome</label>
-                                <input type="text" class="form-control" name="Nome" id="txtNome" placeholder="Nome">
+                                <label for="txtNome">Nome</label>
+                                <input type="text" class="form-control" name="Nome" id="txtNome" placeholder="Nome" />
                             </div>
                             <div class="form-group">
-                                <label for="Email">E-mail</label>
-                                <input type="email" class="form-control" nome="Email" id="txtEmail" placeholder="E-mail">
+                                <label for="txtEmail">E-mail</label>
+                                <input type="email" class="form-control" name="Email" id="txtEmail" placeholder="E-mail" />
                             </div>
+
                             <div class="form-group">
                                 <label for="combo">Foto</label>
                                 <input type="file" id="txtFoto" name="Foto" accept="image/jpeg" />
@@ -67,15 +67,16 @@
             </thead>
 
             <tbody>
-                @for(int i = 0; i < Model.Count; i++)
+                @for (int i = 0; i < Model.Count; i++)
                 {
+
                     <tr>
                         <td>@Model[i].Id</td>
-                        <td>FOTO</td>
+                        <td><img src="@("http://127.0.0.1:10000/devstoreaccount1/teste/web/" + Model[i].Id + ".jpg")" width="50" height="50"/></td>
                         <td>@Model[i].Nome</td>
                         <td>@Model[i].Email</td>
                         <td><button type="button" onclick="mostrarModalEditar(@Model[i].Id)">Editar</button></td>
-                        <td><button type="button" onclick="(@Model[i].Id)">Excluir</button></td>
+                        <td><button type="button" onclick="excluirUser(@Model[i].Id)">Excluir</button></td>
                     </tr>
                 }
             </tbody>
@@ -106,12 +107,26 @@
                     $.ajax({
                         url: "/Usuario/Criar",
                         method: "POST",
+                        datatype: "json",
                         data: new FormData(document.getElementById("formCriar")),
                         contentType: false,
                         processData: false,
                         success: function (dados) {
                             if (dados == "ok") {
-                                window.location.reload();
+                                //window.location.reload();
+                                $('#modalCriar').modal('toggle');
+                                setInterval(function () {
+                                    $.ajax({
+                                        method: "GET", //GET OU POST
+                                        url: "/Usuario/Index" //LOCAL DO ARQUIVO
+
+                                    }).done(function (answer) {
+                                        $('#teste').html(answer);//Executa se tiver sucesso
+
+                                    }).fail(function (jqXHR, textStatus) {
+                                        console.log("Request search failed: " + textStatus); //executa se falhar 
+                                    });
+                                }, 200); // Tempo para cada execução
                             } else {
                                 alert("Erro: " + dados);
                             }
@@ -137,7 +152,7 @@
                     id: id
                 };
                 $.ajax({
-                    url: "/Pedido/ModalEditar",
+                    url: "/Usuario/ModalEditar",
                     method: "GET",
                     cache: false,
                     data: obj,
@@ -154,6 +169,40 @@
                     }
                 })
             }
+
+            function excluirUser(id) {
+
+                var obj = {
+                    id: id
+                };
+                $.ajax({
+                    url: "/Usuario/Excluir",
+                    method: "POST",
+                    cache: false,
+                    data: obj,
+                    success: function (dados) {
+                        alert("Usuário excluído com sucesso!!");
+                        //window.location.reload();
+                        setInterval(function () {
+                            $.ajax({
+                                method: "GET", //GET OU POST
+                                url: "/Usuario/Index" //LOCAL DO ARQUIVO
+
+                            }).done(function (answer) {
+                                $('#teste').html(answer);//Executa se tiver sucesso
+
+                            }).fail(function (jqXHR, textStatus) {
+                                console.log("Request search failed: " + textStatus); //executa se falhar 
+                            });
+                        }, 500); // Tempo para cada execução
+                    },
+                    error: function () {
+                        alert("Erro");
+                    }
+                })
+            }
+
+          
 
         </script>
     </div>

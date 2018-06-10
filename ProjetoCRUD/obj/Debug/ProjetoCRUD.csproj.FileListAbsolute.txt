@@ -171,4 +171,3 @@ C:\workspace\ProjetoCRUD\ProjetoCRUD\bin\pt-br\System.Web.Mvc.resources.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csprojResolveAssemblyReference.cache
 C:\workspace\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.dll
 C:\workspace\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.pdb
-C:\workspace\ProjetoCRUD\ProjetoCRUD\ProjetoCRUD\obj\Debug\ProjetoCRUD.csprojResolveAssemblyReference.cache

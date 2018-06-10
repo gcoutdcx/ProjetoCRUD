@@ -6,7 +6,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Editar Pedido</h4>
+                    <h4 class="modal-title">Editar Usuário</h4>
                 </div>
                 <div class="modal-body">
                     @if (Model == null)
@@ -21,8 +21,12 @@
                             <input type="text" class="form-control" id="txtNomeEditar" name="Nome" value="@Model.Nome" />
                         </div>
                         <div class="form-group">
-                            <label for="txtValorEditar">Valor</label>
-                            <input type="text" class="form-control" id="txtValorEditar" name="Valor" value="@Model.Email" />
+                            <label for="txtEmailEditar">Email</label>
+                            <input type="text" class="form-control" id="txtEmailEditar" name="Email" value="@Model.Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="comboEditar">Foto</label>
+                            <input type="file" id="txtFotoEditar" name="Foto" accept="image/jpeg" />
                         </div>
                     }
                 </div>
@@ -48,16 +52,15 @@
                 maxlength: 50
             },
 
-            Valor: {
+            Email: {
                 required: true,
-                min: 0,
-                max: 1000
+                email: true
             }
         },
 
         submitHandler: function (form) {
             $.ajax({
-                url: "/Pedido/Editar",
+                url: "/Usuario/Editar",
                 method: "POST",
                 data: new FormData(document.getElementById("formEditar")),
                 contentType: false,

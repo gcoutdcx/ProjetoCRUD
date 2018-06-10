@@ -121,8 +121,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Pessoa.cs" />
-    <Compile Include="BD\PessoaDAO.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -141,7 +139,7 @@
     <Content Include="assets\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Shared\_Mestre.cshtml" />
     <Content Include="Views\Usuario\_Editar.cshtml" />
-    <Content Include="Views\Usuario\Index2.cshtml" />
+    <Content Include="Views\Usuario\antigo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
