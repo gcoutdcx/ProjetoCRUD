@@ -88,7 +88,7 @@
         <script type="text/javascript" src="~/assets/js/jquery.validate.min.js"></script>
         <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
         <script type="text/javascript">
-
+            
             $("#formCriar").validate({
                 rules: {
                     Nome: {
@@ -115,18 +115,19 @@
                             if (dados == "ok") {
                                 //window.location.reload();
                                 $('#modalCriar').modal('toggle');
-                                setInterval(function () {
+                                add2 = setInterval(function () {
                                     $.ajax({
                                         method: "GET", //GET OU POST
                                         url: "/Usuario/Index" //LOCAL DO ARQUIVO
 
                                     }).done(function (answer) {
                                         $('#teste').html(answer);//Executa se tiver sucesso
-
+                                        clearInterval(add2)
                                     }).fail(function (jqXHR, textStatus) {
                                         console.log("Request search failed: " + textStatus); //executa se falhar 
                                     });
-                                }, 200); // Tempo para cada execução
+                                }, 400); // Tempo para cada execução
+                                
                             } else {
                                 alert("Erro: " + dados);
                             }
@@ -148,6 +149,9 @@
             }
 
             function mostrarModalEditar(id) {
+                if ($.active) {
+                    return;
+                }
                 var obj = {
                     id: id
                 };
@@ -183,18 +187,19 @@
                     success: function (dados) {
                         alert("Usuário excluído com sucesso!!");
                         //window.location.reload();
-                        setInterval(function () {
+                        add = setInterval(function () {
                             $.ajax({
                                 method: "GET", //GET OU POST
                                 url: "/Usuario/Index" //LOCAL DO ARQUIVO
 
                             }).done(function (answer) {
                                 $('#teste').html(answer);//Executa se tiver sucesso
-
+                                clearInterval(add)
                             }).fail(function (jqXHR, textStatus) {
                                 console.log("Request search failed: " + textStatus); //executa se falhar 
                             });
                         }, 500); // Tempo para cada execução
+                        
                     },
                     error: function () {
                         alert("Erro");

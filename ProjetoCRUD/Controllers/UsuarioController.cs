@@ -128,7 +128,9 @@ namespace ProjetoCRUD
                     cmd.Parameters.AddWithValue("@email", usuario.Email);
                     cmd.Parameters.AddWithValue("@id", usuario.Id);
 
+                    Upload(usuario, usuario.Id);
                     cmd.ExecuteNonQuery();
+                    
                 }
             }
 
