@@ -12,7 +12,7 @@ namespace ProjetoCRUD
 {
     public class UsuarioController : Controller
     {
-        // GET: Pedido
+  
         public ActionResult Index()
         {
             List<Usuario> lista = new List<Usuario>();
@@ -194,5 +194,7 @@ namespace ProjetoCRUD
 
             return Json("Sucesso!", JsonRequestBehavior.AllowGet);
         }
+
+       
     }
 }
