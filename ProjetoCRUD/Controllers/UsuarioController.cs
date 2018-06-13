@@ -195,6 +195,16 @@ namespace ProjetoCRUD
             return Json("Sucesso!", JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ModalCadastro()
+        {
+            return PartialView("_Cadastro");
+        }
+
+        public ActionResult ModalExcluir(Usuario user)
+        {
+            return PartialView("_Excluir", user);
+        }
+
        
     }
 }

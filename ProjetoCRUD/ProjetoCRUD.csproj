@@ -128,7 +128,7 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Usuario\Index.cshtml" />
-    <Content Include="Views\Usuario\_Modal.cshtml" />
+    <Content Include="Views\Usuario\_Cadastro.cshtml" />
     <Content Include="assets\css\bootstrap-theme.css.map" />
     <Content Include="assets\css\bootstrap-theme.min.css.map" />
     <Content Include="assets\css\bootstrap.css.map" />
@@ -140,6 +140,7 @@
     <Content Include="Views\Shared\_Mestre.cshtml" />
     <Content Include="Views\Usuario\_Editar.cshtml" />
     <Content Include="Views\Usuario\antigo.cshtml" />
+    <Content Include="Views\Usuario\_Excluir.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -13,13 +13,13 @@
 
 
 </head>
-<body id="teste">
-    <div><p><h1>Cadastro de Usuários</h1></p></div>
+<body>
+   
 
-    <div>
+    <div id="pai">
         <div id="vao"></div>
 
-        <div id="modalCriar" class="modal fade" tabindex="-1" role="dialog">
+       <!-- <div id="modalCriar" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <form id="formCriar">
                     <div class="modal-content">
@@ -50,11 +50,13 @@
                 </form>
             </div>
         </div>
-
-
-        <button class="btn btn-primary fa fa-pencil" type="button" onclick="mostrarModalCriar()">Novo Usuário</button>
+           -->
+        <p><h1>Cadastro de Usuários</h1></p>
+        <button class="btn btn-success" type="button" onclick="mostrarModalCriar()">Novo Usuário</button>
 
         <table id="userTable" class="table">
+            
+            
             <thead>
                 <tr>
                     <th>Id</th>
@@ -72,11 +74,11 @@
 
                     <tr>
                         <td>@Model[i].Id</td>
-                        <td><img src="@("http://127.0.0.1:10000/devstoreaccount1/teste/web/" + Model[i].Id + ".jpg")" width="50" height="50"/></td>
+                        <td><img src="@("http://127.0.0.1:10000/devstoreaccount1/teste/web/" + Model[i].Id + ".jpg")" width="50" height="50" /></td>
                         <td>@Model[i].Nome</td>
                         <td>@Model[i].Email</td>
-                        <td><button type="button" onclick="mostrarModalEditar(@Model[i].Id)">Editar</button></td>
-                        <td><button type="button" onclick="excluirUser(@Model[i].Id)">Excluir</button></td>
+                        <td><button type="button" class="btn btn-primary fa fa-pencil" onclick="mostrarModalEditar(@Model[i].Id)">Editar</button></td>
+                        <td><button type="button" class="btn btn-danger" onclick="excluirUser(@Model[i].Id)">Excluir</button></td>
                     </tr>
                 }
             </tbody>
@@ -88,67 +90,29 @@
         <script type="text/javascript" src="~/assets/js/jquery.validate.min.js"></script>
         <script type="text/javascript" src="~/assets/js/bootstrap.min.js"></script>
         <script type="text/javascript">
-            
-            $("#formCriar").validate({
-                rules: {
-                    Nome: {
-                        required: true,
-                        minlength: 5,
-                        maxlength: 50
-                    },
-
-                    Email: {
-                        required: true,
-                        email: true
-                    }
-                },
-
-                submitHandler: function (form) {
-                    $.ajax({
-                        url: "/Usuario/Criar",
-                        method: "POST",
-                        datatype: "json",
-                        data: new FormData(document.getElementById("formCriar")),
-                        contentType: false,
-                        processData: false,
-                        success: function (dados) {
-                            if (dados == "ok") {
-                                //window.location.reload();
-                                $('#modalCriar').modal('toggle');
-                                add2 = setInterval(function () {
-                                    $.ajax({
-                                        method: "GET", //GET OU POST
-                                        url: "/Usuario/Index" //LOCAL DO ARQUIVO
-
-                                    }).done(function (answer) {
-                                        $('#teste').html(answer);//Executa se tiver sucesso
-                                        clearInterval(add2)
-                                    }).fail(function (jqXHR, textStatus) {
-                                        console.log("Request search failed: " + textStatus); //executa se falhar 
-                                    });
-                                }, 400); // Tempo para cada execução
-                                
-                            } else {
-                                alert("Erro: " + dados);
-                            }
-                        },
-                        error: function () {
-                            alert("Erro");
-                        }
-                    });
-                }
-            });
-
 
             function mostrarModalCriar() {
-               $("#modalCriar").modal({
-                    backdrop: "static",
-                    keyboard: false
-                });
-      
-            }
+                if ($.active) {
+                    return;
+                }
+                $.ajax({
+                    url: "/Usuario/ModalCadastro",
+                    method: "GET",
+                    cache: false,
+                    success: function (dados) {
+                        $("#vao").html(dados);
 
-            
+                        $("#modalCriar").modal({
+                            backdrop: "static",
+                            keyboard: false
+                        });
+                    },
+                    error: function () {
+                        alert("Erro");
+                    }
+                })
+
+            }
 
             function mostrarModalEditar(id) {
                 if ($.active) {
@@ -177,31 +141,20 @@
             }
 
             function excluirUser(id) {
-
-                var obj = {
+                    var obj = {
                     id: id
                 };
                 $.ajax({
-                    url: "/Usuario/Excluir",
-                    method: "POST",
+                    url: "/Usuario/ModalExcluir",
                     cache: false,
                     data: obj,
                     success: function (dados) {
-                        alert("Usuário excluído com sucesso!!");
-                        //window.location.reload();
-                        add = setInterval(function () {
-                            $.ajax({
-                                method: "GET", //GET OU POST
-                                url: "/Usuario/Index" //LOCAL DO ARQUIVO
+                        $("#vao").html(dados);
 
-                            }).done(function (answer) {
-                                $('#teste').html(answer);//Executa se tiver sucesso
-                                clearInterval(add)
-                            }).fail(function (jqXHR, textStatus) {
-                                console.log("Request search failed: " + textStatus); //executa se falhar 
-                            });
-                        }, 500); // Tempo para cada execução
-                        
+                        $("#modalExcluir").modal({
+                            backdrop: "static",
+                            keyboard: false
+                        });
                     },
                     error: function () {
                         alert("Erro");
@@ -209,7 +162,7 @@
                 })
             }
 
-          
+
 
         </script>
     </div>
