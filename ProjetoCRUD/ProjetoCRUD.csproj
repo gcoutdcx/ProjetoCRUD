@@ -139,7 +139,6 @@
     <Content Include="assets\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\Shared\_Mestre.cshtml" />
     <Content Include="Views\Usuario\_Editar.cshtml" />
-    <Content Include="Views\Usuario\antigo.cshtml" />
     <Content Include="Views\Usuario\_Excluir.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
